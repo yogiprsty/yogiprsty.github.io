@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+
+body, pre{
+    font-family: 'Oswald', sans-serif;
+}
+
+body nav{
+    background-color: #172d58;
+}
+
+#nav-mobile{
+    background-color: #172d58;
+}
+
+nav ul li a.waves-effect{
+    color: #f8f9fa;
+}
+
+#body-content th.small, td.small{
+    width: 8%;
+}
+
+#body-content th.xsmall, td.xsmall{
+    width: 5%;
+}
+
+#teams-list .card-image img{
+    padding-top: 20px;
+}
+#teams-list .card-content pre{
+    letter-spacing: 1px;
+}
+
+#team-list a.disabled-a{
+    color: blue;
+}
+
+#favorite-list .card-image img{
+    padding-top: 20px;
+}
+#favorite-list .card-content pre{
+    letter-spacing: 1px;
+}
