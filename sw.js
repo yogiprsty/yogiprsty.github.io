@@ -5,35 +5,57 @@ else console.log(`Workbox gagal dimuat`);
 
 //precache
 workbox.precaching.precacheAndRoute([
-    "./",
-    "https://fonts.gstatic.com/s/oswald/v35/TK3iWkUHHAIjg752FD8Gl-1PK62t.woff2",
-    "./assets/icon/favicon.png",
-    "./assets/icon/apple-icon-120.jpg",
-    "./assets/icon/apple-icon-152.jpg",
-    "./assets/icon/apple-icon-167.jpg",
-    "./assets/icon/apple-icon-180.jpg",
-    "./assets/icon/manifest-icon-192.png",
-    "./assets/icon/manifest-icon-512.png",
-    "./assets/splash/apple-splash-640-1136.jpg",
-    "./assets/splash/apple-splash-750-1334.jpg",
-    "./assets/splash/apple-splash-1125-2436.jpg",
-    "./assets/splash/apple-splash-1242-2208.jpg",
-    "./assets/splash/apple-splash-1536-2048.jpg",
-    "./assets/splash/apple-splash-1668-2224.jpg",
-    "./assets/splash/apple-splash-2048-2732.jpg",
-    "./manifest.json",
-    "./nav.html",
-    "./index.html",
-    "./css/materialize.min.css",
-    "./css/styles.css",
-    "./js/materialize.min.js",
-    "./js/nav.js",
-    "./js/api.js",
-    "./js/idb.js",
-    "./js/db.js",
-    "./js/script.js",
-    "./notify.js"
+    { url: "./", revision: '1' },
+    { url: "./assets/icon/favicon.png", revision: '1' },
+    { url: "./assets/icon/apple-icon-120.jpg", revision: '1' },
+    { url: "./assets/icon/apple-icon-152.jpg", revision: '1' },
+    { url: "./assets/icon/apple-icon-167.jpg", revision: '1' },
+    { url: "./assets/icon/apple-icon-180.jpg", revision: '1' },
+    { url: "./assets/icon/manifest-icon-192.png", revision: '1' },
+    { url: "./assets/icon/manifest-icon-512.png", revision: '1' },
+    { url: "./assets/splash/apple-splash-640-1136.jpg", revision: '1' },
+    { url: "./assets/splash/apple-splash-750-1334.jpg", revision: '1' },
+    { url: "./assets/splash/apple-splash-1125-2436.jpg", revision: '1' },
+    { url: "./assets/splash/apple-splash-1242-2208.jpg", revision: '1' },
+    { url: "./assets/splash/apple-splash-1536-2048.jpg", revision: '1' },
+    { url: "./assets/splash/apple-splash-1668-2224.jpg", revision: '1' },
+    { url: "./assets/splash/apple-splash-2048-2732.jpg", revision: '1' },
+    { url: "./manifest.json", revision: '1' },
+    { url: "./nav.html", revision: '1' },
+    { url: "./index.html", revision: '1' },
+    { url: "./css/materialize.min.css", revision: '1' },
+    { url: "./css/styles.css", revision: '1' },
+    { url: "./js/materialize.min.js", revision: '1' },
+    { url: "./js/nav.js", revision: '1' },
+    { url: "./js/api.js", revision: '1' },
+    { url: "./js/idb.js", revision: '1' },
+    { url: "./js/db.js", revision: '1' },
+    { url: "./js/script.js", revision: '1' },
+    { url: "./notify.js", revision: '1' }
 ])
+
+workbox.routing.registerRoute(
+    /^https:\/\/fonts\.googleapis\.com/,
+    new workbox.strategies.StaleWhileRevalidate({
+        cacheName: 'google-fonts-stylesheets',
+    })
+);
+
+workbox.routing.registerRoute(
+    /^https:\/\/fonts\.gstatic\.com/,
+    new workbox.strategies.CacheFirst({
+        cacheName: 'google-fonts-webfonts',
+        plugins: [
+            new workbox.cacheableResponse.CacheableResponsePlugin({
+                statuses: [0, 200],
+            }),
+            new workbox.expiration.ExpirationPlugin({
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+                maxEntries: 30,
+            }),
+        ],
+    })
+);
 
 // caching pages
 workbox.routing.registerRoute(
@@ -46,7 +68,16 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
     /^https:\/\/api\.football-data\.org\/v2\/competitions\/CL\/(standings|teams)/,
     new workbox.strategies.StaleWhileRevalidate({
-        cacheName: 'football-data'
+        cacheName: 'football-data',
+        plugins: [
+            new workbox.cacheableResponse.CacheableResponsePlugin({
+                statuses: [0, 200],
+            }),
+            new workbox.expiration.ExpirationPlugin({
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+                maxEntries: 30,
+            }),
+        ]
     })
 );
 
